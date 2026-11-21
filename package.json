@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "tsx --test tests/*.test.ts",
@@ -18,7 +18,6 @@
     "admin:create": "tsx scripts/bootstrap.ts"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^16.4.6",
     "@prisma/client": "^6.19.3",
     "next": "16.4.6",
     "prisma": "^6.19.3",
