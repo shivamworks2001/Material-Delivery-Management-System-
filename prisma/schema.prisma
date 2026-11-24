@@ -1,6 +1,137 @@
 generator client {
  provider = "prisma-client-js"
 }
+
+model Customer {
+ id String @id @default(cuid())
+ number Int @unique @default(autoincrement())
+ code String @unique
+ type String
+ name String
+ legalName String @default("")
+ displayName String @default("")
+ gstin String? @unique
+ pan String?
+ category String @default("")
+ industry String @default("")
+ active Boolean @default(true)
+ duplicateKey String @unique
+ group String @default("")
+ salesperson String @default("")
+ source String @default("")
+ notes String @default("")
+ version Int @default(1)
+ createdBy String
+ updatedBy String
+ creator User @relation("CustomerCreator", fields: [createdBy], references: [id])
+ editor User @relation("CustomerEditor", fields: [updatedBy], references: [id])
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ contact CustomerContact?
+ addresses CustomerAddress[]
+ financial CustomerFinancial?
+ projects CustomerProject[]
+ locations CustomerLocation[]
+ documents CustomerDocument[]
+ history CustomerHistory[]
+ @@index([name])
+ @@index([active, category, type])
+}
+model CustomerContact {
+ id String @id @default(cuid())
+ customerId String @unique
+ customer Customer @relation(fields: [customerId], references: [id])
+ person String
+ designation String @default("")
+ mobile String
+ alternateMobile String @default("")
+ email String @default("")
+ website String @default("")
+ landline String @default("")
+ @@index([mobile])
+ @@index([email])
+}
+model CustomerAddress {
+ id String @id @default(cuid())
+ customerId String
+ customer Customer @relation(fields: [customerId], references: [id])
+ kind String
+ line1 String
+ line2 String @default("")
+ country String @default("India")
+ state String @default("")
+ district String @default("")
+ city String @default("")
+ pin String @default("")
+ @@unique([customerId, kind])
+}
+model CustomerFinancial {
+ customerId String @id
+ customer Customer @relation(fields: [customerId], references: [id])
+ terms String @default("Cash")
+ customTerms String @default("")
+ creditLimit Decimal @default(0) @db.Decimal(16,2)
+ creditDays Int @default(0)
+ openingBalance Decimal @default(0) @db.Decimal(16,2)
+ balanceType String @default("Receivable")
+ currency String @default("INR")
+ tds Boolean @default(false)
+ tdsDetails String @default("")
+}
+model CustomerProject {
+ id String @id @default(cuid())
+ customerId String
+ customer Customer @relation(fields: [customerId], references: [id])
+ name String
+ active Boolean @default(true)
+ locations CustomerLocation[]
+ @@unique([customerId, name])
+ @@unique([id, customerId])
+}
+model CustomerLocation {
+ id String @id @default(cuid())
+ customerId String
+ customer Customer @relation(fields: [customerId], references: [id])
+ projectId String?
+ project CustomerProject? @relation(fields: [projectId, customerId], references: [id, customerId])
+ name String
+ address String
+ person String @default("")
+ mobile String @default("")
+ email String @default("")
+ pin String @default("")
+ isDefault Boolean @default(false)
+ active Boolean @default(true)
+ removed Boolean @default(false)
+ @@index([customerId, active])
+}
+model CustomerDocument {
+ id String @id @default(cuid())
+ customerId String
+ customer Customer @relation(fields: [customerId], references: [id])
+ name String
+ mime String
+ size Int
+ content Bytes
+ uploadedBy String
+ uploader User @relation(fields: [uploadedBy], references: [id])
+ createdAt DateTime @default(now())
+ @@index([customerId])
+}
+model CustomerHistory {
+ id String @id @default(cuid())
+ customerId String
+ customer Customer @relation(fields: [customerId], references: [id])
+ actorId String
+ actor User @relation(fields: [actorId], references: [id])
+ action String
+ createdAt DateTime @default(now())
+ @@index([customerId, createdAt])
+}
+model CustomerSequence {
+ id Int @id
+ value Int
+}
 datasource db {
  provider = "postgresql"
  url = env("DATABASE_URL")
@@ -19,6 +150,10 @@ model User {
  active Boolean @default(true)
  createdAt DateTime @default(now())
  sessions Session[]
+ createdCustomers Customer[] @relation("CustomerCreator")
+ editedCustomers Customer[] @relation("CustomerEditor")
+ customerDocuments CustomerDocument[]
+ customerHistory CustomerHistory[]
 }
 model Session {
  tokenHash String @id
