@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CompanyLogo } from "./company-logo";
 export function Shell({
   name,
   role,
@@ -12,10 +13,7 @@ export function Shell({
     <div className="workspace">
       <aside className="sidebar">
         <Link href="/" className="brand">
-          <span className="sun">☀</span>
-          <span>
-            Sunshine<small>ENGINEERING</small>
-          </span>
+          <CompanyLogo className="sidebar-logo" priority />
         </Link>
         <p className="nav-label">WORKSPACE</p>
         <nav>
@@ -38,6 +36,7 @@ export function Shell({
       </aside>
       <div className="main-wrap">
         <header className="topbar">
+          <Link href="/" className="mobile-brand"><CompanyLogo /></Link>
           <span>Material Delivery Management</span>
           <div className="account">
             <span className="avatar">{name.slice(0, 1)}</span>

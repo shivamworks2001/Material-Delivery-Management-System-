@@ -1,0 +1,7 @@
+.company-logo{display:block;height:auto;object-fit:contain;border-radius:8px;background:white}
+.sidebar-logo{width:100%;max-width:190px;margin:0 auto}
+.login-logo{width:240px;max-width:100%}
+.mobile-brand{display:none}
+.dashboard-logo{width:210px;align-self:center;margin-left:24px}
+@media(max-width:1100px){.dashboard-logo{width:155px}}
+@media(max-width:760px){.login-logo{width:140px}.mobile-brand{display:block;width:72px;flex-shrink:0}.topbar>span{display:none}.dashboard-logo{display:none}.topbar{gap:12px}}
