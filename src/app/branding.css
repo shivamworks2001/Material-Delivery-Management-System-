@@ -1,4 +1,15 @@
 .company-logo{display:block;height:auto;object-fit:contain;background:transparent}
+.login-story{background:#eef5fa;color:#16324a;border-right:1px solid #d9e5ef}
+.login-story p:not(.eyebrow),.login-story small{color:#4a6275}
+.login-story .eyebrow{color:#775510}
+.sidebar{background:#eef5fa;color:#16324a;border-right:1px solid #d9e5ef}
+.sidebar .nav-label{color:#526b7e}
+.sidebar nav a{background:#e0ebf3;color:#183b58;border:1px solid transparent}
+.sidebar nav a:hover{background:#d2e4f1;border-color:#b8d1e3}
+.sidebar-note{border-top-color:#cbdde9;color:#25465e}
+.sidebar-note span{color:#526b7e}
+.hero{background:#eef5fa;border-color:#d9e5ef}
+.hero p,.hero-label{color:#4a6275}
 .sidebar-logo{width:100%;max-width:190px;margin:0 auto}
 .login-logo{width:240px;max-width:100%}
 .mobile-brand{display:none}
